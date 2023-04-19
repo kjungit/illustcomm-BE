@@ -1,10 +1,13 @@
 import * as express from "express";
-import { Request, Response } from "express";
 import { myDataBase } from "./db";
 import PostsRouter from "./routes/posts";
 import CommentsRouter from "./routes/comment";
-import { upload } from "./middleware/uploadS3";
-import { PostsController } from "./controller/PostsController";
+import AuthRouter from "./routes/auth";
+import SourceRouter from "./routes/source";
+import * as cookieParser from "cookie-parser";
+
+export const tokenList = {};
+
 myDataBase
   .initialize() // 데이터베이스 연결
   .then(() => {
@@ -22,9 +25,12 @@ const app = express();
 // update : 데이터를 수정
 // delete : 데이터를 삭제
 app.use(express.json()); // json 형태의 데이터를 받을 수 있게 해줌
+app.use(cookieParser()); // cookie를 사용할 수 있게 해줌
 
 app.use("/posts", PostsRouter);
 app.use("/comments", CommentsRouter);
+app.use("/auth", AuthRouter);
+app.use("/source", SourceRouter);
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
