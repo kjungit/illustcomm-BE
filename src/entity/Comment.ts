@@ -4,9 +4,9 @@ import {
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from "typeorm";
 import { Post } from "./Post";
+import { User } from "./User";
 
 @Entity()
 export class Comment {
@@ -19,9 +19,15 @@ export class Comment {
   @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @ManyToOne(() => Post, (post) => post.comments)
+  @ManyToOne(() => Post, (post) => post.comments, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  })
   post: Post;
+
+  @ManyToOne(() => User, (user) => user.comments, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  })
+  author: User;
 }
