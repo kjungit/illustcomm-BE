@@ -121,6 +121,7 @@ export class UserController {
     res.send({ message: "로그아웃 되었습니다." });
   };
 
+  // 회원 탈퇴
   static withdrawel = async (req: JwtRequest, res: Response) => {
     // 해당 유저가 탈퇴 요청을 하는지 확인
     const { id: userId } = req.decoded;
@@ -141,6 +142,8 @@ export class UserController {
     await myDataBase.getRepository(User).remove(currentUser);
     res.send({ message: "탈퇴되었습니다." });
   };
+
+  // 프로필 수정
   static updateProfile = async (
     req: JwtRequest & MulterS3Request,
     res: Response
